@@ -33,22 +33,20 @@ def home_page() -> int:
     print("MBG (MABA BUTUH GIZI)")
     print("===========================")
     print()
-    print("Selamat Datang di MBG! (Bukan Makan Bergizi Gratis)")
+    print("Selamat Datang di MBG!")
     print()
-    print("Pilihlah opsi berikut untuk melanjutkan:")
     print("1. Berikan Rekomendasi Makanan")
     print("2. I'm Feeling Lucky (Random)")
     print("3. Exit")
     print()
 
     while True:
-        try:
-            pilihan=int(input("Masukkan pilihan (1-3): "))
-            if 1<=pilihan<=3:
+        try: #tes validasi input
+            pilihan=int(input("Masukkan pilihan (1-3) = "))
+            if validasi_pilihan(pilihan,3):
                 return pilihan
-            print("Masukkan angka dengan batasan 1-3")
-        except ValueError:
-            print("Masukan harus berupa angka")
+        except ValueError: #alternatif untuk input di luar range yang tidak valid
+            print("Pilihan harus berupa angka 1-3")
     
 
 
