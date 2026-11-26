@@ -68,7 +68,23 @@ def check_harga(rentang: int, data: list) -> list:
 
     Return: list entri yang harganya masuk rentang; list kosong jika tidak ada.
     """
-
+    hasil = [] #Sebagai list kosong untuk hasil saringan
+    for item in data: #Looping untuk setiap item dalam data
+        harga = item [3] #Buat ngambil nilai harga dalam item (harga dimasukin di urutan ke-4)
+        #Mengecek rentang dan harga apaka memenuhi salah satu syarat
+        if rentang == 1 and harga < 10000:
+            hasil.append(item)
+        elif rentang == 2 and 10000 <= harga < 15000:
+            hasil.append(item)
+        elif rentang == 3 and 15000 <= harga < 20000:
+            hasil.append(item)
+        elif rentang == 4 and 20000 <= harga < 25000:
+            hasil.append(item)
+        elif rentang == 5 and 25000 <= harga < 30000:
+            hasil.append(item)
+        elif rentang == 6 and harga >= 30000:
+            hasil.append(item)
+    return hasil #Mengembalikan item yang lolos, atau kosong jika tidak ada yang cocok
 
 def penentuan_isi_piring() -> list[int] | None:
     """Tampilkan menu isi piring (1-4, bisa multiple) dan Kembali (5).
