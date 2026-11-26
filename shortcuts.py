@@ -36,7 +36,7 @@ def home_page() -> int:
     print("Selamat Datang di MBG!")
     print()
     print("1. Berikan Rekomendasi Makanan")
-    print("2. I'm Feeling Lucky (Random)")
+    print("2. I'm Feeling Lucky (Makanan Random)")
     print("3. Exit")
     print()
 
