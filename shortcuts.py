@@ -18,9 +18,9 @@ def reset_state() -> None:
 
 def validasi_pilihan(a: int, b: int) -> bool:
     """Cek apakah pilihan a berada di rentang 1 sampai b (inklusif).
-
     Return: True jika 1 <= a <= b, False selainnya (termasuk bukan int).
     """
+    return type(a) is int and 1 <= a <= b
 
 
 def home_page() -> int:
