@@ -51,6 +51,10 @@ def check_lokasi(lokasi: str, data: list) -> list:
 
     Return: list entri baru dengan lokasi == lokasi; list kosong jika tidak ada.
     """
+    for i in range(len(data)):
+        if(data[i][1]!=lokasi):
+            data.remove([i][1])
+    return data
 
 
 def penentuan_harga() -> int | None:
