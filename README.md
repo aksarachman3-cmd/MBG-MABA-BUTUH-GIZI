@@ -12,6 +12,7 @@ MBG (Maba Butuh Gizi) adalah program berbasis terminal yang dibuat untuk memenuh
 - [Requirements](#requirements)
 - [Cara Menjalankan](#cara-menjalankan)
 - [Cara Kerja](#cara-kerja)
+- [Struktur Proyek](#struktur-proyek)
 - [Tampilan](#tampilan)
 
 ## Anggota Kelompok
@@ -48,8 +49,8 @@ python --version
 1. Clone repository ini:
 
    ```bash
-   git clone <link-repository>
-   cd <nama-folder>
+   git clone https://github.com/aksarachman3-cmd/MBG-MABA-BUTUH-GIZI.git
+   cd MBG-MABA-BUTUH-GIZI
    ```
 
 2. Jalankan program:
@@ -64,18 +65,44 @@ python --version
 
 Program bekerja dengan kerangka berpikir sebagai berikut:
 
-1. Program memberikan 2 pilihan rekomendasi kepada user:
-   - Berdasarkan pertimbangan user
-   - Random
-2. Terdapat 3 pertimbangan user yang diterima, yaitu lokasi, harga, dan isi piring.
-3. Ketiga pertimbangan tersebut dilakukan secara sequential, sesuai keputusan user.
-4. Program memberikan pilihan kepada user untuk memesan rekomendasi makanan untuk esok hari.
+1. Program menampilkan home page dengan tiga pilihan: berikan rekomendasi, I'm Feeling Lucky, dan Exit.
+2. Setiap kali kembali ke home page, state sesi di-reset melalui `sc.reset_state()`.
+3. Jika user memilih rekomendasi, pertimbangan dalam `daftar_pertimbangan` (Lokasi, Harga, Isi Piring) diproses satu per satu secara sequential.
+4. Setiap pertimbangan dipilih lewat halaman penentuannya, lalu data difilter dengan `check_lokasi`, `check_harga`, atau `check_isi_piring`.
+5. Hasil filter ditampilkan di halaman Hasil Rekomendasi, lalu user ditanya apakah ingin memesan untuk esok hari.
+6. Jika user menjawab Y, user memilih slot waktu pengambilan di halaman Pemesanan.
+7. I'm Feeling Lucky mengambil satu entri acak dari `database.py` dan langsung menanyakan pemesanan.
 
 ### Alur Program
 
-<!-- Tambahkan gambar alur program di sini -->
+```mermaid
+flowchart TD
+    A[Mulai] --> B[Home Page]
+    B -->|1| C[Pilih Pertimbangan]
+    C --> D[Lokasi / Harga / Isi Piring]
+    D --> E[Filter database]
+    E --> C
+    C -->|Selesai| F[Hasil Rekomendasi]
+    B -->|2| G[I'm Feeling Lucky]
+    G --> F
+    F -->|Y| H[Pemesanan]
+    F -->|N| B
+    H --> B
+    B -->|3| I[Selesai]
+```
 
+## Struktur Proyek
 
+| Path | Isi |
+|---|---|
+| `main.py` | Alur kerja dan routing utama program |
+| `shortcuts.py` | Kontrak seluruh fungsi bersama (nama, parameter, return) dan state sesi |
+| `database.py` | Data tenant, lokasi, harga, dan kandungan piring |
+| `docs/` | Pedoman pengerjaan task dan framework git |
+| `task/` | Spesifikasi task per anggota, satu file untuk setiap ID task |
+| `.github/` | Template pull request |
+
+Setiap anggota mengerjakan file di folder namanya masing-masing sesuai ID task. Fungsi yang dipakai bersama didefinisikan lebih dulu di `shortcuts.py`.
 
 ## Tampilan
 
@@ -146,12 +173,14 @@ Tampilan yang dilihat user saat menentukan lokasi kantin yang ingin dituju.
 ===========================
 
 Pilihlah Lokasi Kantin yang Ingin Dituju
-1. GKU 1
-2. KOICA
-3. ASRAMA
-4. Kembali
+1. Masjid Alwassat
+2. GKU 2
+3. TB3
+4. TB2
+5. KOICA
+6. Kembali
 
-Masukkan pilihan (1-4) =
+Masukkan pilihan (1-6) =
 ```
 
 ### Penentuan Harga Page
@@ -165,10 +194,10 @@ Tampilan yang dilihat user saat menentukan rentang harga makanan.
 
 Pilihlah Range Harga yang Diinginkan (Rp)
 1. < 10.000
-2. 10.000 - 14.999
-3. 15.000 - 19.999
-4. 20.000 - 24.999
-5. 25.000 - 29.999
+2. 10.000 - < 15.000
+3. 15.000 - < 20.000
+4. 20.000 - < 25.000
+5. 25.000 - < 30.000
 6. >= 30.000
 7. Kembali
 
