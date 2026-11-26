@@ -29,6 +29,28 @@ def home_page() -> int:
     Return: pilihan (1 = rekomendasi, 2 = I'm Feeling Lucky, 3 = Exit).
     """
 
+    print("===========================")
+    print("MBG (MABA BUTUH GIZI)")
+    print("===========================")
+    print()
+    print("Selamat Datang di MBG! (Bukan Makan Bergizi Gratis)")
+    print()
+    print("Pilihlah opsi berikut untuk melanjutkan:")
+    print("1. Berikan Rekomendasi Makanan")
+    print("2. I'm Feeling Lucky (Random)")
+    print("3. Exit")
+    print()
+
+    while True:
+        try:
+            pilihan=int(input("Masukkan pilihan (1-3): "))
+            if 1<=pilihan<=3:
+                return pilihan
+            print("Masukkan angka dengan batasan 1-3")
+        except ValueError:
+            print("Masukan harus berupa angka")
+    
+
 
 def berikan_rekomendasi_makanan() -> str:
     """Tampilkan sisa daftar_pertimbangan, baca pilihan, lalu hapus yang dipilih.
@@ -97,6 +119,7 @@ def menampilkan_makanan(daftar_makanan: list) -> None:
 
 
 def hasil_rekomendasi(daftar_makanan: list) -> bool:
+    
     """Tampilkan hasil rekomendasi lalu tanyakan pemesanan untuk esok hari.
 
     Return: True jika user menjawab Y, False jika menjawab N.
