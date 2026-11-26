@@ -51,14 +51,15 @@ def check_lokasi(lokasi: str, data: list) -> list:
 
     Return: list entri baru dengan lokasi == lokasi; list kosong jika tidak ada.
     """
+    hasil = []
     for i in range(len(data)):
-        if(data[i][1]!=lokasi):
-            data.remove([i][1])
-    return data
+        if(data[i][1]==lokasi):
+            hasil.append(data[i])
+    return hasil
 
 
 def penentuan_harga() -> int | None:
-    """Tampilkan menu rentang harga (1-6) dan pilihan Kembali (7).
+    """Tampilkan menu rentang sharga (1-6) dan pilihan Kembali (7).
 
     Return: nomor rentang 1-6, atau None jika user memilih Kembali.
     """
@@ -98,6 +99,11 @@ def menampilkan_makanan(daftar_makanan: list) -> None:
 
     Return: None.
     """
+    for i in range(len(daftar_makanan)):
+        print(f"{i+1}. Nama makanan : {daftar_makanan[i][2]}")
+        print(f"     Harga         : {daftar_makanan[i][3]}")
+        print(f"     Tenant        : {daftar_makanan[i][0]}")
+        print(f"     Lokasi        : {daftar_makanan[i][1]}")
 
 
 def hasil_rekomendasi(daftar_makanan: list) -> bool:
