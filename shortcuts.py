@@ -147,7 +147,10 @@ def hasil_rekomendasi(daftar_makanan: list) -> bool:
     """Tampilkan hasil rekomendasi lalu tanyakan pemesanan untuk esok hari.
 
     Return: True jika user menjawab Y, False jika menjawab N.
-    """
+    """ 
+
+import random
+from database import database #mengambil daftar data makanan dari file database.py
 
 
 def im_feeling_lucky() -> bool:
@@ -156,6 +159,20 @@ def im_feeling_lucky() -> bool:
 
     Return: True jika user menjawab Y, False jika menjawab N.
     """
+    makanan_acak = random.choice(database) #memilih satu makanan acak dari list database
+    #membuat tampilan output im feeling lucky
+    print("===========================")
+    print("    I'm Feeling Lucky")
+    print("===========================\n")
+    print("Makanan siangmu kali ini adalah ........\n")
+    menampilkan_makanan([makanan_acak]) #memanggil fungsi menampilkan makanan dengan makanan acak 
+    while True:
+        jawaban = input("\nApakah Anda ingin memesan untuk besok (Y/N) ? ").strip().upper()
+        if jawaban == "Y":
+            return True
+        if jawaban == "N":
+            return False
+        print("Input tidak valid! Masukkan Y atau N.") #Memberi tahu bahwa inputan tidak sesuai, dan mengulang loop
 
 
 def pemesanan() -> int | None:
