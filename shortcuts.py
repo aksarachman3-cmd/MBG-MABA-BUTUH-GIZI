@@ -202,3 +202,24 @@ def pemesanan() -> int | None:
 
     Return: nomor slot 1-5, atau None jika user memilih Kembali.
     """
+    print("===========================")
+    print("Pemesanan Makanan")
+    print("===========================")
+    print()
+    print("Pilih Waktu Pengambilan:")
+    print("1. 9.00-10.00")
+    print("2. 10.00-11.00")
+    print("3. 11.00-12.00")
+    print("4. 12.00-13.00")
+    print("5. 13.00-14.00")
+    print("6. Kembali")
+    print()
+    try:
+        pilihan=int(input("Masukkan pilihanmu (1-6) = "))
+        if validasi_pilihan(pilihan,5):
+            return pilihan
+        elif pilihan==6:
+            pilihan=None
+            return pilihan
+    except ValueError:
+        print("Pilihan harus berupa angka 1-6")
