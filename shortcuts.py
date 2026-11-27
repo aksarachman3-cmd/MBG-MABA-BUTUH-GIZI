@@ -83,6 +83,28 @@ def penentuan_harga() -> int | None:
 
     Return: nomor rentang 1-6, atau None jika user memilih Kembali.
     """
+    print("===========================")
+    print("     Penentuan Harga")
+    print("===========================\n")
+    print("1. < 10.000")
+    print("2. 10.000 - < 15.000")  
+    print("3. 15.000 - < 20.000")  
+    print("4. 20.000 - < 25.000")  
+    print("5. 25.000 - < 30.000")  
+    print("6. >= 30.000")
+    print("7. Kembali\n")
+
+    while True:  # Mengulang sampai pengguna memasukkan pilihan 1-7
+        teks = input("Masukkan pilihan (1-7) = ").strip()  # Membaca input teks dan menghapus spasi di pinggirnya
+
+        if teks.isdigit():  # Mengecek apakah semua karakter input berupa angka bulat positif
+            pilihan = int(teks)  # Mengubah teks angka menjadi tipe data int
+            if validasi_pilihan(pilihan, 7):  # Memeriksa apakah pilihan berada di rentang 1 sampai 7
+                if pilihan == 7:  # Jika memilih Kembali
+                    return None  # Mengembalikan None
+                return pilihan  # Mengembalikan nomor rentang 1-6
+
+        print("Input tidak valid! Masukkan angka 1-7.")  # Ditampilkan jika bukan angka atau di luar 1-7, lalu loop ulang
 
 
 def check_harga(rentang: int, data: list) -> list:
