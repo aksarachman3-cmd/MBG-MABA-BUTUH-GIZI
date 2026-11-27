@@ -170,6 +170,25 @@ def hasil_rekomendasi(daftar_makanan: list) -> bool:
 
     Return: True jika user menjawab Y, False jika menjawab N.
     """ 
+    #Membuat tampilan untuk hasil rekomendasi
+    print("===========================")
+    print("Hasil Rekomendasi")
+    print("===========================")
+    print()
+    print("Berikut Beberapa Pilihan Makananmu:")
+    print()
+    #Menampilkan daftar rekomendasi makanan
+    menampilkan_makanan(daftar_makanan)
+
+    #Menerima inputan pemesanan esok dan validasi input
+    while True:
+        checkout=str(input("Apakah Anda ingin memesan untuk besok (Y/N) ?")).strip().upper() #untuk menghilangkan spasi dan mengubahnya menjadi upper case
+        if checkout=="Y":
+            checkout=True
+            return True
+        if checkout=="N":
+            return False
+        print("Pilihan harus berupa Y/N!") #Peringatan yang muncul ketika input bukan Y atau N
 
 import random
 from database import database #mengambil daftar data makanan dari file database.py
