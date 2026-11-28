@@ -4,6 +4,8 @@ Isi setiap fungsi masih berupa placeholder. Anggota tinggal mengisi logika
 di dalam fungsi yang menjadi tanggung jawab task-nya masing-masing.
 """
 
+from database import database  # mengambil daftar data makanan dari file database.py
+import random
 counter = 0
 urutan = ["Pertama", "Kedua", "Ketiga"]
 daftar_pertimbangan = ["Lokasi", "Harga", "Isi Piring"]
@@ -41,13 +43,12 @@ def home_page() -> int:
     print()
 
     while True:
-        try: #tes validasi input
-            pilihan=int(input("Masukkan pilihan (1-3) = "))
-            if validasi_pilihan(pilihan,3):
+        try:  # tes validasi input
+            pilihan = int(input("Masukkan pilihan (1-3) = "))
+            if validasi_pilihan(pilihan, 3):
                 return pilihan
-        except ValueError: #alternatif untuk input di luar range yang tidak valid
+        except ValueError:  # alternatif untuk input di luar range yang tidak valid
             print("Pilihan harus berupa angka 1-3")
-    
 
 
 def berikan_rekomendasi_makanan() -> str:
@@ -57,6 +58,51 @@ def berikan_rekomendasi_makanan() -> str:
     hasil ketikan user. Teks "pertimbangan pertama/kedua/ketiga" diambil dari
     urutan[counter].
     """
+    global counter, daftar_pertimbangan
+
+    # Ambil urutan saat ini ("Pertama", "Kedua", "Ketiga") dari list urutan
+    label_urutan = urutan[counter] if counter < len(
+        urutan) else str(counter + 1)
+    opsi_kembali = len(daftar_pertimbangan) + 1
+
+    while True:
+        print("===========================")
+        print("Berikan Rekomendasi Makanan")
+        print("===========================\n")
+        print(f"Pilihlah Pertimbangan {label_urutan} Anda")
+
+        # Tampilkan daftar pertimbangan yang tersisa mulai dari nomor 1
+        for no_urut, pertimbangan in enumerate(daftar_pertimbangan, start=1):
+            print(f"{no_urut}. {pertimbangan}")
+
+        # Tampilkan Kembali sebagai opsi terakhir
+        print(f"{opsi_kembali}. Kembali\n")
+
+        # Input user
+        try:
+            pilihan = int(
+                input(f"Masukkan pilihan (1-{opsi_kembali}) = ").strip())
+        except ValueError:
+            print(f"Pilihan harus berupa angka 1-{opsi_kembali}.\n")
+            continue
+
+        # Validasi rentang 1 sampai opsi_kembali (termasuk Kembali)
+        if not validasi_pilihan(pilihan, opsi_kembali):
+            print(
+                f"Pilihan di luar rentang! Masukkan angka 1-{opsi_kembali}.\n")
+            continue
+
+        # Jika user memilih opsi terakhir (Kembali)
+        if pilihan == opsi_kembali:
+            return ""
+
+        # Ambil nilai dari daftar_pertimbangan, hapus elemen yang dipilih, lalu update counter
+        indeks = pilihan - 1
+        terpilih = daftar_pertimbangan[indeks]
+        daftar_pertimbangan.pop(indeks)
+        counter += 1
+
+        return terpilih
 
 
 def penentuan_lokasi() -> str | None:
@@ -73,7 +119,7 @@ def check_lokasi(lokasi: str, data: list) -> list:
     """
     hasil = []
     for i in range(len(data)):
-        if(data[i][1]==lokasi):
+        if (data[i][1] == lokasi):
             hasil.append(data[i])
     return hasil
 
@@ -87,24 +133,27 @@ def penentuan_harga() -> int | None:
     print("     Penentuan Harga")
     print("===========================\n")
     print("1. < 10.000")
-    print("2. 10.000 - < 15.000")  
-    print("3. 15.000 - < 20.000")  
-    print("4. 20.000 - < 25.000")  
-    print("5. 25.000 - < 30.000")  
+    print("2. 10.000 - < 15.000")
+    print("3. 15.000 - < 20.000")
+    print("4. 20.000 - < 25.000")
+    print("5. 25.000 - < 30.000")
     print("6. >= 30.000")
     print("7. Kembali\n")
 
     while True:  # Mengulang sampai pengguna memasukkan pilihan 1-7
-        teks = input("Masukkan pilihan (1-7) = ").strip()  # Membaca input teks dan menghapus spasi di pinggirnya
+        # Membaca input teks dan menghapus spasi di pinggirnya
+        teks = input("Masukkan pilihan (1-7) = ").strip()
 
         if teks.isdigit():  # Mengecek apakah semua karakter input berupa angka bulat positif
             pilihan = int(teks)  # Mengubah teks angka menjadi tipe data int
-            if validasi_pilihan(pilihan, 7):  # Memeriksa apakah pilihan berada di rentang 1 sampai 7
+            # Memeriksa apakah pilihan berada di rentang 1 sampai 7
+            if validasi_pilihan(pilihan, 7):
                 if pilihan == 7:  # Jika memilih Kembali
                     return None  # Mengembalikan None
                 return pilihan  # Mengembalikan nomor rentang 1-6
 
-        print("Input tidak valid! Masukkan angka 1-7.")  # Ditampilkan jika bukan angka atau di luar 1-7, lalu loop ulang
+        # Ditampilkan jika bukan angka atau di luar 1-7, lalu loop ulang
+        print("Input tidak valid! Masukkan angka 1-7.")
 
 
 def check_harga(rentang: int, data: list) -> list:
@@ -115,10 +164,11 @@ def check_harga(rentang: int, data: list) -> list:
 
     Return: list entri yang harganya masuk rentang; list kosong jika tidak ada.
     """
-    hasil = [] #Sebagai list kosong untuk hasil saringan
-    for item in data: #Looping untuk setiap item dalam data
-        harga = item [3] #Buat ngambil nilai harga dalam item (harga dimasukin di urutan ke-4)
-        #Mengecek rentang dan harga apaka memenuhi salah satu syarat
+    hasil = []  # Sebagai list kosong untuk hasil saringan
+    for item in data:  # Looping untuk setiap item dalam data
+        # Buat ngambil nilai harga dalam item (harga dimasukin di urutan ke-4)
+        harga = item[3]
+        # Mengecek rentang dan harga apaka memenuhi salah satu syarat
         if rentang == 1 and harga < 10000:
             hasil.append(item)
         elif rentang == 2 and 10000 <= harga < 15000:
@@ -131,7 +181,8 @@ def check_harga(rentang: int, data: list) -> list:
             hasil.append(item)
         elif rentang == 6 and harga >= 30000:
             hasil.append(item)
-    return hasil #Mengembalikan item yang lolos, atau kosong jika tidak ada yang cocok
+    return hasil  # Mengembalikan item yang lolos, atau kosong jika tidak ada yang cocok
+
 
 def penentuan_isi_piring() -> list[int] | None:
     """Tampilkan menu isi piring (1-4, bisa multiple) dan Kembali (5).
@@ -165,14 +216,10 @@ def menampilkan_makanan(daftar_makanan: list) -> None:
 
 
 def hasil_rekomendasi(daftar_makanan: list) -> bool:
-    
     """Tampilkan hasil rekomendasi lalu tanyakan pemesanan untuk esok hari.
 
     Return: True jika user menjawab Y, False jika menjawab N.
-    """ 
-
-import random
-from database import database #mengambil daftar data makanan dari file database.py
+    """
 
 
 def im_feeling_lucky() -> bool:
@@ -181,20 +228,24 @@ def im_feeling_lucky() -> bool:
 
     Return: True jika user menjawab Y, False jika menjawab N.
     """
-    makanan_acak = random.choice(database) #memilih satu makanan acak dari list database
-    #membuat tampilan output im feeling lucky
+    makanan_acak = random.choice(
+        database)  # memilih satu makanan acak dari list database
+    # membuat tampilan output im feeling lucky
     print("===========================")
     print("    I'm Feeling Lucky")
     print("===========================\n")
     print("Makanan siangmu kali ini adalah ........\n")
-    menampilkan_makanan([makanan_acak]) #memanggil fungsi menampilkan makanan dengan makanan acak 
+    # memanggil fungsi menampilkan makanan dengan makanan acak
+    menampilkan_makanan([makanan_acak])
     while True:
-        jawaban = input("\nApakah Anda ingin memesan untuk besok (Y/N) ? ").strip().upper()
+        jawaban = input(
+            "\nApakah Anda ingin memesan untuk besok (Y/N) ? ").strip().upper()
         if jawaban == "Y":
             return True
         if jawaban == "N":
             return False
-        print("Input tidak valid! Masukkan Y atau N.") #Memberi tahu bahwa inputan tidak sesuai, dan mengulang loop
+        # Memberi tahu bahwa inputan tidak sesuai, dan mengulang loop
+        print("Input tidak valid! Masukkan Y atau N.")
 
 
 def pemesanan() -> int | None:
@@ -215,11 +266,11 @@ def pemesanan() -> int | None:
     print("6. Kembali")
     print()
     try:
-        pilihan=int(input("Masukkan pilihanmu (1-6) = "))
-        if validasi_pilihan(pilihan,5):
+        pilihan = int(input("Masukkan pilihanmu (1-6) = "))
+        if validasi_pilihan(pilihan, 5):
             return pilihan
-        elif pilihan==6:
-            pilihan=None
+        elif pilihan == 6:
+            pilihan = None
             return pilihan
     except ValueError:
         print("Pilihan harus berupa angka 1-6")
