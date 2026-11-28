@@ -190,6 +190,58 @@ def penentuan_isi_piring() -> list[int] | None:
     Return: daftar nomor komponen yang dipilih (mis. [1, 4]), atau None jika
     user memilih Kembali.
     """
+    while True:
+        print("===========================")
+        print("   Penentuan Isi Piring")
+        print("===========================")
+        print()
+        print("Pilihlah Isi Piringmu (Bisa Multiple)")
+        print("1. Nasi")
+        print("2. Protein hewani")
+        print("3. Protein nabati")
+        print("4. Sayur")
+        print("5. Kembali")
+        print()
+
+        # Baca input dan tolak jika kosong
+        teks = input("Masukkan pilihan (1-5) = ").strip()
+        if teks == "":
+            print("Input tidak boleh kosong! Masukkan angka 1-5.\n")
+            continue
+
+        # Validasi setiap nomor: harus angka, rentang 1-5, dan tidak duplikat
+        potongan = teks.split()
+        pilihan_user: list[int] = []
+        valid = True
+
+        for item in potongan:
+            if not item.isdigit():
+                valid = False
+                break
+
+            angka = int(item)
+            if not validasi_pilihan(angka, 5):
+                valid = False
+                break
+
+            if angka in pilihan_user:
+                valid = False
+                break
+
+            pilihan_user.append(angka)
+
+        if not valid:
+            print("Input tidak valid! Masukkan angka 1-5 tanpa duplikasi.\n")
+            continue
+
+        # opsi 5 (Kembali): kembalikan None jika berdiri sendiri
+        if 5 in pilihan_user:
+            if len(pilihan_user) > 1:
+                print("Pilihan 5 (Kembali) tidak boleh digabung dengan pilihan lain.\n")
+                continue
+            return None
+
+        return pilihan_user
 
 
 def check_isi_piring(komponen: list[int], data: list) -> list:
@@ -234,30 +286,29 @@ def hasil_rekomendasi(daftar_makanan: list) -> bool:
     """Tampilkan hasil rekomendasi lalu tanyakan pemesanan untuk esok hari.
 
     Return: True jika user menjawab Y, False jika menjawab N.
-    """ 
-    #Membuat tampilan untuk hasil rekomendasi
+    """
+    # Membuat tampilan untuk hasil rekomendasi
     print("===========================")
     print("Hasil Rekomendasi")
     print("===========================")
     print()
     print("Berikut Beberapa Pilihan Makananmu:")
     print()
-    #Menampilkan daftar rekomendasi makanan
+    # Menampilkan daftar rekomendasi makanan
     menampilkan_makanan(daftar_makanan)
 
-    #Menerima inputan pemesanan esok dan validasi input
+    # Menerima inputan pemesanan esok dan validasi input
     while True:
-        checkout=str(input("Apakah Anda ingin memesan untuk besok (Y/N) ?")).strip().upper() #untuk menghilangkan spasi dan mengubahnya menjadi upper case
-        if checkout=="Y":
-            checkout=True
+        # untuk menghilangkan spasi dan mengubahnya menjadi upper case
+        checkout = str(
+            input("Apakah Anda ingin memesan untuk besok (Y/N) ?")).strip().upper()
+        if checkout == "Y":
+            checkout = True
             return True
-        if checkout=="N":
+        if checkout == "N":
             return False
-        print("Pilihan harus berupa Y/N!") #Peringatan yang muncul ketika input bukan Y atau N
-
-import random
-from database import database #mengambil daftar data makanan dari file database.py
-
+        # Peringatan yang muncul ketika input bukan Y atau N
+        print("Pilihan harus berupa Y/N!")
 
 
 def im_feeling_lucky() -> bool:
