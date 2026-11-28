@@ -200,6 +200,21 @@ def check_isi_piring(komponen: list[int], data: list) -> list:
 
     Return: list entri yang memenuhi semua komponen; list kosong jika tidak ada.
     """
+    hasil = []
+
+    for item in data:
+        gizi = item[4]
+        cocok = True
+
+        for pilihan in komponen:
+            if gizi[pilihan - 1] == False:
+                cocok = False
+                break
+
+        if cocok:
+            hasil.append(item)
+
+    return hasil
 
 
 def menampilkan_makanan(daftar_makanan: list) -> None:
